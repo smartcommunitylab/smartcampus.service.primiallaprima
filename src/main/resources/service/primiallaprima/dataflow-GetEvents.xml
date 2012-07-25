@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataflow xmlns="http://www.example.org/mml-schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.example.org/mml-schema mml-schema.xsd ">
+
+	<output />
+
+	<variable name="eventsHtml" type="org.w3c.dom.Document" />
+	<variable name="eventsProto" type="eu.trentorise.smartcampus.services.primiallaprima.data.message.Primiallaprima.Events" />
+			
+	<httpConnector name="eventsConnector" encoding="UTF-8" />
+	<httpConnector name="eventConnector" encoding="UTF-8" session="mandatory" referenceConnector="eventsConnector" />
+	
+	<connect name="c1" connector="eventsConnector" outputVar="eventsHtml">
+		<properties>
+			<property name="url">
+				<value>"http://www.buonconsiglio.com/free?service=EventsList&amp;src_id=0000010"</value>
+			</property>
+		</properties>
+	</connect>
+	
+	<protobuf uri="service/primiallaprima/events2proto.xslt" outputVar="eventsProto">
+		<in>eventsHtml</in>
+	</protobuf>
+
+	<foreach name="fe1" item="event" itemClass="eu.trentorise.smartcampus.services.primiallaprima.data.message.Primiallaprima.Event" 
+		aggregateVariable="eventsList" outputVar="output" writeAction="append" writeMethod="addAll">
+		<items>eventsProto.getEventList()</items>		
+
+		<variable name="eventHtml" type="org.w3c.dom.Document" />
+		<variable name="eventProto" type="eu.trentorise.smartcampus.services.primiallaprima.data.message.Primiallaprima.EventDetail" />
+		
+		<connect name="c2" connector="eventConnector" outputVar="eventHtml">
+			<properties>
+				<property name="url">
+					<value>event.getInfoUrl()</value>
+				</property>
+			</properties>
+		</connect>
+	
+		<protobuf uri="service/primiallaprima/event2proto.xslt" outputVar="eventProto">
+			<in>eventHtml</in>
+		</protobuf>
+			
+		<script outputVar="event">
+			<className>eu.trentorise.smartcampus.services.primiallaprima.impl.GetEventsScript</className>
+			<method>addEventDetail</method>
+			<variables>
+				<value>event</value>
+				<value>eventProto</value>								
+			</variables>
+		</script>
+		
+		<script outputVar="event">
+			<className>eu.trentorise.smartcampus.services.primiallaprima.impl.GetEventsScript</className>
+			<method>setTimeData</method>
+			<variables>
+				<value>event</value>								
+			</variables>
+		</script>		
+		
+		<script outputVar="event">
+			<className>eu.trentorise.smartcampus.services.primiallaprima.impl.GetEventsScript</className>
+			<method>setEventId</method>
+			<variables>
+				<value>event</value>								
+			</variables>
+		</script>			
+			
+		<geolocalize outputVar="event" inputVar="event" attribute="poi" onError="continue">
+        	<poiName>event.getLuogo()</poiName>
+      	</geolocalize>
+        
+        <merge outputVar="output" writeAction="append" writeMethod="add" initOutput="false">
+            <in>event</in>
+        </merge>
+
+	</foreach>
+
+</dataflow>

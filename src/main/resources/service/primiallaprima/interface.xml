@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service-definition xmlns="http://www.example.org/interface-schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.example.org/interface-schema ../interface-schema.xsd ">
+	<interface serviceURI="eu.trentorise.smartcampus.services.primiallaprima.PrimiallaprimaService">
+		<operation name="GetEvents">
+			<output
+				type="eu.trentorise.smartcampus.services.primiallaprima.data.message.Primiallaprima$Event"
+				repeated="true" />
+		</operation>
+	</interface>
+
+	<implementation package="eu.trentorise.smartcampus.services.primiallaprima">
+		<operationImpl name="GetEvents" />
+	</implementation>
+
+</service-definition>

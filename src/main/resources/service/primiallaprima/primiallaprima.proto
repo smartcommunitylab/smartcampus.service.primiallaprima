@@ -1,0 +1,29 @@
+package eu.trentorise.smartcampus.services.primiallaprima.data.message;
+
+import "core.proto";
+
+message Events {
+	repeated Event event = 1;
+}
+
+message Event {
+	optional string id = 1;
+	required string title = 2;
+	required string luogo = 3;
+	required string city = 4;
+	optional string day = 5;
+	optional string hour = 6;
+	optional string infoUrl = 7;
+	optional EventDetail detail = 8;
+	optional string eventDate = 9;
+	optional it.sayservice.platform.core.message.TimeData time = 10;
+	optional it.sayservice.platform.core.message.POI poi = 11;
+}
+
+message EventDetail {
+	optional string type = 1;
+	optional string address = 2;
+	optional string contact = 3;
+	optional string contactUrl = 4;
+	optional string description = 5;
+}
