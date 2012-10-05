@@ -13,7 +13,7 @@
 	<connect name="c1" connector="eventsConnector" outputVar="eventsHtml">
 		<properties>
 			<property name="url">
-				<value>"http://www.buonconsiglio.com/free?service=EventsList&amp;src_id=0000010"</value>
+				<value>"http://www.buonconsiglio.com/free?service=EventsList&amp;src_id=0000010&amp;provincia=TN"</value>
 			</property>
 		</properties>
 	</connect>
