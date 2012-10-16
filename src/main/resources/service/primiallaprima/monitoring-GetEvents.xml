@@ -1,3 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<monitoring operation="GetEvents" serviceURI="eu.trentorise.smartcampus.services.primiallaprima.PrimiallaprimaService" xmlns="http://www.example.org/monitoring-schema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.example.org/monitoring-schema ../../main/resources/monitoring-schema.xsd ">
-</monitoring>
